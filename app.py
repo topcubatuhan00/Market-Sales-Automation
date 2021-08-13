@@ -18,6 +18,25 @@ class addProductWindow(QMainWindow):
 
         self.initUI()
 
+    def warningMessage(self,messageContent):
+
+        self.message = QMessageBox()
+        self.message.setIcon(QMessageBox.Warning)
+        self.message.setWindowIcon(QIcon('./frontend/icons/warning.png'))
+        self.message.setText(messageContent)
+        self.message.setWindowTitle("Warning!")
+                
+        self.message.exec_()
+
+    def congMessage(self,messageContent):
+        self.messageCong = QMessageBox()
+        self.messageCong.setIcon(QMessageBox.Information)
+        self.messageCong.setWindowIcon(QIcon('./frontend/icons/confirm.png'))
+        self.messageCong.setText(messageContent)
+        self.messageCong.setWindowTitle("Congratulations")
+
+        self.messageCong.exec_()
+
     def initUI(self):
         
         self.labelBarcode = QtWidgets.QLabel(self)
@@ -77,45 +96,23 @@ class addProductWindow(QMainWindow):
         self.hide()
 
     def save(self):
-        if backendServices.checkBarcode(int(self.textBarcode.text())):
-            self.msg2 = QMessageBox()
-            self.msg2.setIcon(QMessageBox.Warning)
-            self.msg2.setWindowIcon(QIcon('./frontend/icons/warning.png'))
-            self.msg2.setText("This barcode number is already in use.")
-            self.msg2.setWindowTitle("Warning!")
-                
-            self.msg2.exec_()
+        if len(str(self.textBarcode.text())) != 0:
+            if backendServices.checkBarcode(int(self.textBarcode.text())):
+                self.warningMessage("This barcode number is already in use.")
+            else:
+                try:
+                    self.barcodeNumber = int(self.textBarcode.text())
+                    self.productName = self.textProductName.text()
+                    self.productAmount = int(self.textAmount.text())
 
-        else:
-            try:
-                self.barcodeNumber = int(self.textBarcode.text())
-                self.productName = self.textProductName.text()
-                self.productAmount = int(self.textAmount.text())
-
-                if len(self.labelBarcode.text()) == 0 | len(self.labelProductName.text()) == 0 | len(self.labelAmount.text()) == 0:
-                    self.msg1 = QMessageBox()
-                    self.msg1.setIcon(QMessageBox.Warning)
-                    self.msg1.setWindowIcon(QIcon('./frontend/icons/warning.png'))
-                    self.msg1.setText("Fill in the information completely.")
-                    self.msg1.setWindowTitle("Warning!")
-                    self.msg1.exec_()
-                else:
-                    backendServices.addProduct(self.barcodeNumber,self.productName,self.productAmount)
-                    self.msg3 = QMessageBox()
-                    self.msg3.setIcon(QMessageBox.Information)
-                    self.msg3.setWindowIcon(QIcon('./frontend/icons/confirm.png'))
-                    self.msg3.setText("Product added successfully")
-                    self.msg3.setWindowTitle("Congratulations")
-
-                    self.msg3.exec_()
-
-            except ValueError:
-                self.msg4 = QMessageBox()
-                self.msg4.setIcon(QMessageBox.Warning)
-                self.msg4.setWindowIcon(QIcon('./frontend/icons/warning.png'))
-                self.msg4.setText("Fill in the all blanks.")
-                self.msg4.setWindowTitle("Warning!")
-                self.msg4.exec_()
+                    if len(self.labelBarcode.text()) == 0 | len(self.labelProductName.text()) == 0 | len(self.labelAmount.text()) == 0:
+                        self.warningMessage("Fill in the information completely.")
+                    else:
+                        backendServices.addProduct(self.barcodeNumber,self.productName,self.productAmount)
+                        self.congMessage("Product added successfully")
+                        
+                except ValueError:
+                    self.warningMessage("Fill in the all blanks.")
         self.textProductName.setText("")
         self.textBarcode.setText("")
         self.textAmount.setText("")
@@ -131,6 +128,25 @@ class saleWindow(QMainWindow):
         self.setStyleSheet('background-color: #293241')
 
         self.initUI()
+
+    def warningMessage(self,messageContent):
+
+        self.message = QMessageBox()
+        self.message.setIcon(QMessageBox.Warning)
+        self.message.setWindowIcon(QIcon('./frontend/icons/warning.png'))
+        self.message.setText(messageContent)
+        self.message.setWindowTitle("Warning!")
+                
+        self.message.exec_()
+
+    def congMessage(self,messageContent):
+        self.messageCong = QMessageBox()
+        self.messageCong.setIcon(QMessageBox.Information)
+        self.messageCong.setWindowIcon(QIcon('./frontend/icons/confirm.png'))
+        self.messageCong.setText(messageContent)
+        self.messageCong.setWindowTitle("Congratulations")
+
+        self.messageCong.exec_()
 
     def initUI(self):
 
@@ -245,36 +261,19 @@ class saleWindow(QMainWindow):
                     self.labelProductNameArea.setText(self.productName)
                     self.labelProductAmountArea.setText(str(self.productAmount))
             except sqlite3.OperationalError:
-                self.msg = QMessageBox()
-                self.msg.setIcon(QMessageBox.Warning)
-                self.msg.setWindowIcon(QIcon('./frontend/icons/warning.png'))
-                self.msg.setText("Please enter the information correctly and completely.")
-                self.msg.setWindowTitle("Warning!")
-
-                self.msg.exec_()
-
+                self.warningMessage("Please enter the information correctly and completely.")
     def addBasket(self):
         try:
             self.quantity = int(self.textQuantity.text())
             self.basketTotal = int(self.labelAmountArea.text())
             
-            self.text = self.basketTotal + (self.quantity * self.productAmount)
+            self.text = str(self.basketTotal + (self.quantity * self.productAmount))
             self.labelAmountArea.setText(self.text)
             
         except ValueError:
-            self.msg = QMessageBox()
-            self.msg.setIcon(QMessageBox.Warning)
-            self.msg.setWindowIcon(QIcon('./frontend/icons/warning.png'))
-            self.msg.setText("Please enter the information correctly and completely.")
-            self.msg.setWindowTitle("Warning!")
-            self.msg.exec_()
+            self.warningMessage("Please enter the information correctly and completely.")
         except AttributeError:
-            self.msg = QMessageBox()
-            self.msg.setIcon(QMessageBox.Warning)
-            self.msg.setWindowIcon(QIcon('./frontend/icons/warning.png'))
-            self.msg.setText("Please enter the information correctly and completely.")
-            self.msg.setWindowTitle("Warning!")
-            self.msg.exec_()
+            self.warningMessage("Please enter the information correctly and completely.")
 
         self.textBarcode.setText(" ")
         self.labelProductNameArea.setText(" ")
@@ -286,23 +285,11 @@ class saleWindow(QMainWindow):
 
         if self.currentAmount != 0:
             backendServices.saveAmount(str(datetime.datetime.now().date()),self.currentAmount)
-            self.msg = QMessageBox()
-            self.msg.setIcon(QMessageBox.Information)
-            self.msg.setWindowIcon(QIcon('./frontend/icons/confirm.png'))
-            self.msg.setText("Transaction completed successfully")
-            self.msg.setWindowTitle("Congratulations")
-
-            self.msg.exec_()
+            self.congMessage("Transaction completed successfully")
 
             self.labelAmountArea.setText("0")
         else:
-            self.msg = QMessageBox()
-            self.msg.setIcon(QMessageBox.Warning)
-            self.msg.setWindowIcon(QIcon('./frontend/icons/warning.png'))
-            self.msg.setText("Please sell first.")
-            self.msg.setWindowTitle("Warning!")
-
-            self.msg.exec_()
+            self.warningMessage("Please sell first.")
 
 class MainForm(QMainWindow):
     def __init__(self):
