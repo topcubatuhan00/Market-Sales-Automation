@@ -17,7 +17,8 @@ conn.execute('''
                 CREATE TABLE AMOUNTHISTORY
                 (
                     DATE TEXT NOT NULL,
-                    AMOUNT INT NOT NULL
+                    AMOUNT INT NOT NULL,
+                    TIME TEXT
                 );
 ''')
 

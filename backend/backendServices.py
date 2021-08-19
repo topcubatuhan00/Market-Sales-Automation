@@ -1,3 +1,4 @@
+from datetime import date
 import sqlite3
 
 conn = sqlite3.connect('barcodes.db')
@@ -18,8 +19,8 @@ def getProductWithBarcodeNumber(barcodeNumber):
     cursor = conn.execute("SELECT BARCODENUMBER,PRODUCTNAME, PRODUCTAMOUNT FROM DESCRIPTION WHERE BARCODENUMBER = "+str(barcodeNumber))
     return cursor
 
-def saveAmount(date,amount):
-    conn.execute("INSERT INTO AMOUNTHISTORY (DATE,AMOUNT) VALUES (?,?)",(date,amount))
+def saveAmount(date,amount,time):
+    conn.execute("INSERT INTO AMOUNTHISTORY (DATE,AMOUNT,TIME) VALUES (?,?,?)",(date,amount,time))
     conn.commit()
 
 def dailyEarnings(date):
@@ -30,3 +31,11 @@ def dailyEarnings(date):
         if str(date) == row2[counter]:
             total += int(row2[counter+1])
     return total
+
+def getDateQuantity():
+    dates = []
+    cursor = conn.execute("SELECT DATE FROM AMOUNTHISTORY")
+    for row in cursor:
+        if not row[0] in dates:
+            dates.append(row[0])
+    return len(dates)
