@@ -39,3 +39,12 @@ def getDateQuantity():
         if not row[0] in dates:
             dates.append(row[0])
     return len(dates)
+
+def getHistory():
+    dates2 = []
+    cursor = conn.execute("SELECT DATE FROM AMOUNTHISTORY")
+    for row in cursor:
+        if not row[0] in dates2:
+            dates2.append(row[0])
+    dates2.sort()
+    return dates2

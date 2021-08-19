@@ -6,6 +6,44 @@ from PyQt5.QtGui import QIcon
 
 from backend import backendServices
 
+class salesHistoryPage(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle('X Market')
+        self.setGeometry(450, 250, 960, 540)
+
+        self.setWindowIcon(QIcon('./frontend/icons/market.png'))
+        self.setStyleSheet('background-color: #293241')
+
+        self.initUI()
+
+    def initUI(self):
+        
+        dates2 = backendServices.getHistory()
+
+        xDate,yDate = 340, 50
+        xButton,yButton = 570,50
+
+        for i in range(backendServices.getDateQuantity()):
+            self.labelDate = QtWidgets.QLabel(self)
+            self.labelDate.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+            self.labelDate.setAlignment(QtCore.Qt.AlignCenter)
+            self.labelDate.resize(200,50)
+            self.labelDate.move(xDate,yDate)
+
+            self.buttonDetail = QPushButton("Detail", self)
+            self.buttonDetail.setStyleSheet('background-color:#d8f3dc; color:#2d6a4f; font-size:18px; border: 1px solid #293241; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
+            self.buttonDetail.resize(75,50)
+            self.buttonDetail.move(xButton,yButton)  
+
+            yDate += 75
+            yButton += 75
+            
+        
+            self.labelDate.setText(dates2[i])
+            
+
 class addProductWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -323,14 +361,25 @@ class MainForm(QMainWindow):
         self.labelDailyEarnings.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
         self.labelDailyEarnings.setAlignment(QtCore.Qt.AlignCenter)
         self.labelDailyEarnings.setText(f"Daily Earnings : {self.dailyEarnings}")
-        self.labelDailyEarnings.resize(260,75)
-        self.labelDailyEarnings.move(350,465)
+        self.labelDailyEarnings.resize(200,75)
+        self.labelDailyEarnings.move(0,465)
+
+        
+        self.btnSaleHistory = QPushButton("Sale History", self)
+        self.btnSaleHistory.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.btnSaleHistory.resize(200,75)
+        self.btnSaleHistory.move(760,465)
+        self.btnSaleHistory.clicked.connect(self.saleHis)
 
     def addProductWindow(self):
         self.addProductWindow = addProductWindow()
         self.addProductWindow.show()
         self.hide()
 
+    def saleHis(self):
+        self.saleWind = salesHistoryPage()
+        self.saleWind.show()
+        self.hide()
 
     def saleWindow(self):
         self.saleWindow = saleWindow()
