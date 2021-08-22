@@ -1,7 +1,7 @@
 
 import sys, sqlite3, datetime
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 
 from backend import backendServices
@@ -16,33 +16,18 @@ class salesHistoryPage(QMainWindow):
         self.setWindowIcon(QIcon('./frontend/icons/market.png'))
         self.setStyleSheet('background-color: #293241')
 
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.tableWidget)
+        self.setLayout(self.layout)
+
         self.initUI()
 
     def initUI(self):
-        
-        dates2 = backendServices.getHistory()
-
-        xDate,yDate = 340, 50
-        xButton,yButton = 570,50
-
-        for i in range(backendServices.getDateQuantity()):
-            self.labelDate = QtWidgets.QLabel(self)
-            self.labelDate.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-            self.labelDate.setAlignment(QtCore.Qt.AlignCenter)
-            self.labelDate.resize(200,50)
-            self.labelDate.move(xDate,yDate)
-
-            self.buttonDetail = QPushButton("Detail", self)
-            self.buttonDetail.setStyleSheet('background-color:#d8f3dc; color:#2d6a4f; font-size:18px; border: 1px solid #293241; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-            self.buttonDetail.resize(75,50)
-            self.buttonDetail.move(xButton,yButton)  
-
-            yDate += 75
-            yButton += 75
-            
-        
-            self.labelDate.setText(dates2[i])
-            
+        self.tableWidget = QTableWidget()
+        self.tableWidget.setRowCount(8)
+        self.tableWidget.setColumnCount(2)
+        self.tableWidget.setItem(0, 0, QTableWidgetItem("Cell (1,1)"))
+        self.tableWidget.setItem(0, 1, QTableWidgetItem("Cell (1,2)"))
 
 class addProductWindow(QMainWindow):
     def __init__(self):

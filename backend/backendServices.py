@@ -36,15 +36,18 @@ def getDateQuantity():
     dates = []
     cursor = conn.execute("SELECT DATE FROM AMOUNTHISTORY")
     for row in cursor:
-        if not row[0] in dates:
-            dates.append(row[0])
+        dates.append(row[0])
     return len(dates)
 
 def getHistory():
-    dates2 = []
-    cursor = conn.execute("SELECT DATE FROM AMOUNTHISTORY")
+    dates = []
+    cursor = conn.execute("SELECT * FROM AMOUNTHISTORY")
     for row in cursor:
-        if not row[0] in dates2:
-            dates2.append(row[0])
-    dates2.sort()
-    return dates2
+        newList = []
+        # dates.append[row[0]+"**"+str(row[1])+"**"+row[2]+"**"]
+        newList.append(row[0])
+        newList.append(row[2])
+        newList.append(row[1])
+        dates.append(newList)
+    return dates
+getHistory()
