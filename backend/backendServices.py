@@ -41,7 +41,7 @@ def getDateQuantity():
 
 def getHistory():
     dates = []
-    cursor = conn.execute("SELECT * FROM AMOUNTHISTORY")
+    cursor = conn.execute("SELECT * FROM AMOUNTHISTORY ORDER BY DATE ASC")
     for row in cursor:
         newList = []
         # dates.append[row[0]+"**"+str(row[1])+"**"+row[2]+"**"]
