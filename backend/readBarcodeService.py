@@ -30,6 +30,6 @@ def generate():
             break
     camera.release()
     cv2.destroyAllWindows()
+    return barcodeList
 
-generate()
-print(barcodeList)
+

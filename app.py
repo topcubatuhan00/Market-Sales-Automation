@@ -4,7 +4,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 
-from backend import backendServices
+from backend import backendServices,readBarcodeService
 
 class salesHistoryPage(QWidget):
 
@@ -132,6 +132,12 @@ class addProductWindow(QMainWindow):
         self.labelBarcode.resize(250,75)
         self.labelBarcode.move(200,45)
 
+        self.buttonImage = QPushButton(self)
+        self.buttonImage.setStyleSheet("background:#293241; background-repeat: no-repeat; background-image: url(./frontend/icons/photo-camera.png) ")
+        self.buttonImage.resize(55,50)
+        self.buttonImage.move(770,50)
+        self.buttonImage.clicked.connect(self.barcode)
+
         self.textBarcode = QtWidgets.QLineEdit(self)
         self.textBarcode.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
         self.textBarcode.setAlignment(QtCore.Qt.AlignCenter)
@@ -175,7 +181,10 @@ class addProductWindow(QMainWindow):
         self.buttonSave.resize(125,75)
         self.buttonSave.move(510,420)
         self.buttonSave.clicked.connect(self.save)
-        
+    def barcode(self):
+        barcodes = readBarcodeService.generate()
+        if len(barcodes) != 0:
+            self.textBarcode.setText(barcodes[0])
     def backHome(self):
         self.mainForm = MainForm()
         self.mainForm.show()
@@ -242,6 +251,12 @@ class saleWindow(QMainWindow):
         self.labelBarcode.setText("Barcode Number =>")
         self.labelBarcode.resize(250,50)
         self.labelBarcode.move(200,50)
+
+        self.buttonImage = QPushButton(self)
+        self.buttonImage.setStyleSheet("background:#293241; background-repeat: no-repeat; background-image: url(./frontend/icons/photo-camera.png) ")
+        self.buttonImage.resize(55,50)
+        self.buttonImage.move(770,50)
+        self.buttonImage.clicked.connect(self.barcode)
 
         self.textBarcode = QtWidgets.QLineEdit(self)
         self.textBarcode.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
@@ -327,6 +342,11 @@ class saleWindow(QMainWindow):
         self.buttonBackHome.resize(130,40)
         self.buttonBackHome.move(415,500)
         self.buttonBackHome.clicked.connect(self.backHome)
+
+    def barcode(self):
+        barcodes = readBarcodeService.generate()
+        if len(barcodes) != 0:
+            self.textBarcode.setText(barcodes[0])
 
     def backHome(self):
         self.mainForm = MainForm()
