@@ -11,15 +11,33 @@ class salesHistoryPage(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('X Market')
-        self.setGeometry(450, 250, 960, 540)
 
-        self.setWindowIcon(QIcon('./frontend/icons/market.png'))
-        self.setStyleSheet('background-color: #293241')
+        self.setWindowIcon(QIcon('./icons/market.png'))
+        self.setStyleSheet('background-color: #DFE7FD')
         self.initUI()
-
+        
+        self.showMaximized()
     def initUI(self):
+
+        self.buttonBack = QPushButton('↼',self)
+        self.buttonBack.setStyleSheet("background:#DFE7FD;color:000000;border:none; font-size:36px")
+        self.buttonBack.resize(55,50)
+        self.buttonBack.move(0,0)
+        self.buttonBack.clicked.connect(self.close)
+        
+        self.btnSale = QPushButton('Satış Yap', self)
+        self.btnSale.setStyleSheet('background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px')
+        self.btnSale.resize(350,100)
+        self.btnSale.move(94,340)
+        self.btnSale.clicked.connect(self.saleWindow)
+
         
 
+        self.btnSaleHistory = QPushButton("Satış Geçmişi", self)
+        self.btnSaleHistory.setStyleSheet("background-color:#FAD2E1; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#1D3557; font-weight:bold; font-size:24px; opacity:.5")
+        self.btnSaleHistory.resize(350,100)
+        self.btnSaleHistory.move(94,640)
+        
         self.createTable()
 
         self.layout = QVBoxLayout()
@@ -27,39 +45,35 @@ class salesHistoryPage(QWidget):
         self.setLayout(self.layout)
 
         self.text1 = QtWidgets.QLabel(self)
-        self.text1.setStyleSheet("font-size:20px; color:#fff; border-bottom: 1px solid #fff;")
+        self.text1.setStyleSheet("font-size:20px; color:#1D3557;font-weight:bold; border-bottom: 1px solid #1D3557;")
         self.text1.setAlignment(QtCore.Qt.AlignCenter)
-        self.text1.setText("Date")
+        self.text1.setText("Tarih")
         self.text1.resize(75,50)
-        self.text1.move(320,0)
+        self.text1.move(820,50)
         self.text2 = QtWidgets.QLabel(self)
-        self.text2.setStyleSheet("font-size:20px; color:#fff;border-bottom: 1px solid #fff;")
+        self.text2.setStyleSheet("font-size:20px; font-weight:bold;color:#1D3557;border-bottom: 1px solid #1D3557;")
         self.text2.setAlignment(QtCore.Qt.AlignCenter)
-        self.text2.setText("Time")
+        self.text2.setText("Saat")
         self.text2.resize(75,50)
-        self.text2.move(455,0)
+        self.text2.move(955,50)
         self.text3 = QtWidgets.QLabel(self)
-        self.text3.setStyleSheet("font-size:20px; color:#fff;border-bottom: 1px solid #fff;")
+        self.text3.setStyleSheet("font-size:20px;font-weight:bold; color:#1D3557;border-bottom: 1px solid #1D3557;")
         self.text3.setAlignment(QtCore.Qt.AlignCenter)
-        self.text3.setText("Price")
+        self.text3.setText("Ücret")
         self.text3.resize(75,50)
-        self.text3.move(575,0)
+        self.text3.move(1075,50)
 
-        self.buttonBackHome = QPushButton("Home", self)
-        self.buttonBackHome.setStyleSheet('background-color:#e76f51; color:#e9edc9; font-size:24px; border: 1px solid #293241; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-        self.buttonBackHome.resize(100,50)
-        self.buttonBackHome.move(0,542)
-        self.buttonBackHome.clicked.connect(self.backHome)
 
         self.show()
-
-
-    def backHome(self):
-        self.mainForm = MainForm()
-        self.mainForm.show()
+    def addProductWindow(self):
+        self.addProductWindow = addProductWindow()
+        self.addProductWindow.show()
+        self.hide()
+    def saleWindow(self):
+        self.salePage = MainForm()
+        self.salePage.show()
         self.hide()
 
-        
     def createTable(self):
 
         self.data = backendServices.getHistory()
@@ -67,10 +81,12 @@ class salesHistoryPage(QWidget):
 
         self.tableWidget = QTableWidget()
         self.tableWidget.setStyleSheet("""
-                font-size:24px; color:#fff;
-                margin-left: 250px;
-                margin-top: 75px;
+                font-size:24px; 
+                color:#1D3557;
+                margin-left: 750px;
+                margin-top: 125px;
                 border: none;
+                font-weight:bold;
             """)
         header = self.tableWidget.horizontalHeader()
         
@@ -78,7 +94,6 @@ class salesHistoryPage(QWidget):
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.horizontalHeader().setVisible(False)
         self.tableWidget.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
-        self.tableWidget.move(100, 50)
         self.tableWidget.setRowCount(backendServices.getDateQuantity())
         self.tableWidget.setColumnCount(3)
         x = 0
@@ -92,17 +107,23 @@ class salesHistoryPage(QWidget):
             y = 0
             x+=1
 
+        self.btnAddProd = QPushButton('Ürün Kaydet', self)
+        self.btnAddProd.setStyleSheet('background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px; opacity:.5')
+        self.btnAddProd.resize(350,100)
+        self.btnAddProd.move(94,490)
+        self.btnAddProd.clicked.connect(self.addProductWindow)
 class addProductWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
+        super(addProductWindow, self).__init__()
 
         self.setWindowTitle('X Market')
-        self.setGeometry(450, 250, 960, 540)
 
-        self.setWindowIcon(QIcon('./frontend/icons/market.png'))
-        self.setStyleSheet('background-color: #293241')
+        self.setWindowIcon(QIcon('./icons/market.png'))
+        self.setStyleSheet('background-color: #DFE7FD')
 
         self.initUI()
+        
+        self.showMaximized()
 
     def warningMessage(self,messageContent):
 
@@ -123,69 +144,99 @@ class addProductWindow(QMainWindow):
 
         self.messageCong.exec_()
 
-    def initUI(self):
-        
-        self.labelBarcode = QtWidgets.QLabel(self)
-        self.labelBarcode.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelBarcode.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelBarcode.setText("Barcode Number =>")
-        self.labelBarcode.resize(250,75)
-        self.labelBarcode.move(200,45)
 
-        self.buttonImage = QPushButton(self)
-        self.buttonImage.setStyleSheet("background:#293241; background-repeat: no-repeat; background-image: url(./frontend/icons/photo-camera.png) ")
-        self.buttonImage.resize(55,50)
-        self.buttonImage.move(770,50)
-        self.buttonImage.clicked.connect(self.barcode)
+    def initUI(self):
+        self.buttonBack = QPushButton('↼',self)
+        self.buttonBack.setStyleSheet("background:#DFE7FD;color:000000;border:none; font-size:36px")
+        self.buttonBack.resize(55,50)
+        self.buttonBack.move(0,0)
+        self.buttonBack.clicked.connect(self.close)
+
+        self.btnSale = QPushButton('Satış Yap', self)
+        self.btnSale.setStyleSheet('background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px')
+        self.btnSale.resize(350,100)
+        self.btnSale.move(94,340)
+        self.btnSale.clicked.connect(self.salePage)
+
+        self.btnAddProd = QPushButton('Ürün Kaydet', self)
+        self.btnAddProd.setStyleSheet('background-color:#FAD2E1; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#1D3557; font-weight:bold; font-size:24px; opacity:.5')
+        self.btnAddProd.resize(350,100)
+        self.btnAddProd.move(94,490)
+
+        self.btnSaleHistory = QPushButton("Satış Geçmişi", self)
+        self.btnSaleHistory.setStyleSheet("background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px; opacity:.5")
+        self.btnSaleHistory.resize(350,100)
+        self.btnSaleHistory.move(94,640)
+        self.btnSaleHistory.clicked.connect(self.saleHis)
+
+        self.labelBg = QtWidgets.QLabel(self)
+        self.labelBg.setStyleSheet("background-color:#CDDAFD;border-top-right-radius : 40px; border-bottom-left-radius : 40px; border-bottom-right-radius : 40px")
+        self.labelBg.resize(1342,900)
+        self.labelBg.move(554,82)
+
+        self.labelBarcode = QtWidgets.QLabel(self)
+        self.labelBarcode.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelBarcode.resize(350,75)
+        self.labelBarcode.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelBarcode.setText("Barkod Numarası")
+        self.labelBarcode.move(830,309)
+
+        self.labelBarcodeBg = QtWidgets.QLabel(self)
+        self.labelBarcodeBg.setStyleSheet("background-color:#EAE4E9;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelBarcodeBg.resize(350,75)
+        self.labelBarcodeBg.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelBarcodeBg.move(1270,309)
 
         self.textBarcode = QtWidgets.QLineEdit(self)
-        self.textBarcode.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.textBarcode.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
         self.textBarcode.setAlignment(QtCore.Qt.AlignCenter)
-        self.textBarcode.resize(250,75)
-        self.textBarcode.move(510,45)
+        self.textBarcode.resize(275,75)
+        self.textBarcode.move(1270,309)
+
+        self.buttonImage = QPushButton('📸',self)
+        self.buttonImage.setStyleSheet("background:#EAE4E9;border:none; font-size:36px")
+        self.buttonImage.resize(55,50)
+        self.buttonImage.move(1558,321)
+        self.buttonImage.clicked.connect(self.barcode)
 
         self.labelProductName = QtWidgets.QLabel(self)
-        self.labelProductName.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.labelProductName.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelProductName.resize(350,75)
         self.labelProductName.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelProductName.setText("Product Name =>")
-        self.labelProductName.resize(250,75)
-        self.labelProductName.move(200,170)
+        self.labelProductName.setText("Ürün Adı")
+        self.labelProductName.move(830,434)
 
         self.textProductName = QtWidgets.QLineEdit(self)
-        self.textProductName.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.textProductName.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
         self.textProductName.setAlignment(QtCore.Qt.AlignCenter)
-        self.textProductName.resize(250,75)
-        self.textProductName.move(510,170)
+        self.textProductName.resize(350,75)
+        self.textProductName.move(1270,434)
 
-        self.labelAmount = QtWidgets.QLabel(self)
-        self.labelAmount.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelAmount.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelAmount.setText("Product Amount =>")
-        self.labelAmount.resize(250,75)
-        self.labelAmount.move(200,295)
+        self.labelProductAmount = QtWidgets.QLabel(self)
+        self.labelProductAmount.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelProductAmount.resize(350,75)
+        self.labelProductAmount.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelProductAmount.setText("Ürün Fiyatı")
+        self.labelProductAmount.move(830,559)
 
-        self.textAmount = QtWidgets.QLineEdit(self)
-        self.textAmount.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.textAmount.setAlignment(QtCore.Qt.AlignCenter)
-        self.textAmount.resize(250,75)
-        self.textAmount.move(510,295)
+        self.textProductAmount = QtWidgets.QLineEdit(self)
+        self.textProductAmount.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.textProductAmount.setAlignment(QtCore.Qt.AlignCenter)
+        self.textProductAmount.resize(350,75)
+        self.textProductAmount.move(1270,559)
 
-        self.buttonBackHome = QPushButton("Home", self)
-        self.buttonBackHome.setStyleSheet('background-color:#e76f51; color:#e9edc9; font-size:24px; border: 1px solid #293241; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-        self.buttonBackHome.resize(125,75)
-        self.buttonBackHome.move(325,420)
-        self.buttonBackHome.clicked.connect(self.backHome)
-
-        self.buttonSave = QPushButton("Save", self)
-        self.buttonSave.setStyleSheet('background-color:#2a9d8f; color:#e9edc9; font-size:24px;border: 1px solid #293241; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-        self.buttonSave.resize(125,75)
-        self.buttonSave.move(510,420)
+        self.buttonSave = QPushButton('Kaydet',self)
+        self.buttonSave.setStyleSheet("background:#99D98C;border:none; font-size:22px; border-bottom-right-radius:40px;")
+        self.buttonSave.resize(150,50)
+        self.buttonSave.move(1746,932)
         self.buttonSave.clicked.connect(self.save)
+
     def barcode(self):
         barcodes = readBarcodeService.generate()
         if len(barcodes) != 0:
             self.textBarcode.setText(barcodes[0])
-    def backHome(self):
+    
+    def salePage(self):
         self.mainForm = MainForm()
         self.mainForm.show()
         self.hide()
@@ -198,7 +249,7 @@ class addProductWindow(QMainWindow):
                 try:
                     self.barcodeNumber = int(self.textBarcode.text())
                     self.productName = self.textProductName.text()
-                    self.productAmount = int(self.textAmount.text())
+                    self.productAmount = int(self.textProductAmount.text())
 
                     if len(self.labelBarcode.text()) == 0 | len(self.labelProductName.text()) == 0 | len(self.labelAmount.text()) == 0:
                         self.warningMessage("Fill in the information completely.")
@@ -208,21 +259,29 @@ class addProductWindow(QMainWindow):
                         
                 except ValueError:
                     self.warningMessage("Fill in the all blanks.")
+        else:
+            self.warningMessage("Fill in the all blanks.")
         self.textProductName.setText("")
         self.textBarcode.setText("")
-        self.textAmount.setText("")
+        self.textProductAmount.setText("")
 
-class saleWindow(QMainWindow):
+    def saleHis(self):
+        self.saleHiss = salesHistoryPage()
+        self.saleHiss.show()
+        self.hide()
+
+class MainForm(QMainWindow):
     def __init__(self):
-        super().__init__()
+        super(MainForm, self).__init__()
 
         self.setWindowTitle('X Market')
-        self.setGeometry(450, 250, 960, 540)
 
-        self.setWindowIcon(QIcon('./frontend/icons/market.png'))
-        self.setStyleSheet('background-color: #293241')
+        self.setWindowIcon(QIcon('./icons/market.png'))
+        self.setStyleSheet('background-color: #DFE7FD')
 
         self.initUI()
+        
+        self.showMaximized()
 
     def warningMessage(self,messageContent):
 
@@ -243,119 +302,142 @@ class saleWindow(QMainWindow):
 
         self.messageCong.exec_()
 
+
     def initUI(self):
+        self.buttonBack = QPushButton('↼',self)
+        self.buttonBack.setStyleSheet("background:#DFE7FD;color:000000;border:none; font-size:36px")
+        self.buttonBack.resize(55,50)
+        self.buttonBack.move(0,0)
+        self.buttonBack.clicked.connect(self.close)
+
+        self.btnSale = QPushButton('Satış Yap', self)
+        self.btnSale.setStyleSheet('background-color:#FAD2E1; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#1D3557; font-weight:bold; font-size:24px')
+        self.btnSale.resize(350,100)
+        self.btnSale.move(94,340)
+
+        self.btnAddProd = QPushButton('Ürün Kaydet', self)
+        self.btnAddProd.setStyleSheet('background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px; opacity:.5')
+        self.btnAddProd.resize(350,100)
+        self.btnAddProd.move(94,490)
+        self.btnAddProd.clicked.connect(self.addProductWindow)
+
+        self.btnSaleHistory = QPushButton("Satış Geçmişi", self)
+        self.btnSaleHistory.setStyleSheet("background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px; opacity:.5")
+        self.btnSaleHistory.resize(350,100)
+        self.btnSaleHistory.move(94,640)
+        self.btnSaleHistory.clicked.connect(self.saleHis)
+
+        self.labelBg = QtWidgets.QLabel(self)
+        self.labelBg.setStyleSheet("background-color:#CDDAFD;border-top-right-radius : 40px; border-bottom-left-radius : 40px; border-bottom-right-radius : 40px")
+        self.labelBg.resize(1342,900)
+        self.labelBg.move(554,82)
 
         self.labelBarcode = QtWidgets.QLabel(self)
-        self.labelBarcode.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.labelBarcode.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelBarcode.resize(350,75)
         self.labelBarcode.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelBarcode.setText("Barcode Number =>")
-        self.labelBarcode.resize(250,50)
-        self.labelBarcode.move(200,50)
+        self.labelBarcode.setText("Barkod Numarası")
+        self.labelBarcode.move(830,137)
 
-        self.buttonImage = QPushButton(self)
-        self.buttonImage.setStyleSheet("background:#293241; background-repeat: no-repeat; background-image: url(./frontend/icons/photo-camera.png) ")
-        self.buttonImage.resize(55,50)
-        self.buttonImage.move(770,50)
-        self.buttonImage.clicked.connect(self.barcode)
+        self.labelBarcodeBg = QtWidgets.QLabel(self)
+        self.labelBarcodeBg.setStyleSheet("background-color:#EAE4E9;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelBarcodeBg.resize(350,75)
+        self.labelBarcodeBg.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelBarcodeBg.move(1270,137)
 
         self.textBarcode = QtWidgets.QLineEdit(self)
-        self.textBarcode.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.textBarcode.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
         self.textBarcode.setAlignment(QtCore.Qt.AlignCenter)
-        self.textBarcode.resize(250,50)
-        self.textBarcode.move(510,50)
+        self.textBarcode.resize(275,75)
+        self.textBarcode.move(1270,137)
 
-        self.buttonConfirmation = QPushButton("✔", self)
-        self.buttonConfirmation.setStyleSheet('background-color:#d0d1ff; color:#2a9d8f; font-size:24px; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-        self.buttonConfirmation.resize(50,50)
-        self.buttonConfirmation.move(455,127)
-        self.buttonConfirmation.clicked.connect(self.clickConfirmButton)    
+        self.buttonImage = QPushButton('📸',self)
+        self.buttonImage.setStyleSheet("background:#EAE4E9;border:none; font-size:36px")
+        self.buttonImage.resize(55,50)
+        self.buttonImage.move(1558,149)
+        self.buttonImage.clicked.connect(self.barcode)
+
+        self.buttonConfirmBarcode1 = QPushButton('√',self)
+        self.buttonConfirmBarcode1.setStyleSheet("background:#1D3557;color:#EAE4E9;border:none; font-size:28px;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.buttonConfirmBarcode1.resize(75,75)
+        self.buttonConfirmBarcode1.move(1187,268)
+        self.buttonConfirmBarcode1.clicked.connect(self.clickConfirmButton)
+
+        # start content area
         
-
         self.labelProductName = QtWidgets.QLabel(self)
-        self.labelProductName.setStyleSheet("background-color:#d0d1ff; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.labelProductName.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelProductName.resize(350,75)
+        self.labelProductName.setText("Ürün Adı")
         self.labelProductName.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelProductName.setText("Product Name :")
-        self.labelProductName.resize(250,50)
-        self.labelProductName.move(200,204)
+        self.labelProductName.move(830,385)
 
-        self.labelProductNameArea = QtWidgets.QLabel(self)
-        self.labelProductNameArea.setStyleSheet("background-color:#d0d1ff; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelProductNameArea.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelProductNameArea.resize(250,50)
-        self.labelProductNameArea.move(510,204)
+        self.labelProductNameText = QtWidgets.QLabel(self)
+        self.labelProductNameText.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelProductNameText.resize(350,75)
+        self.labelProductNameText.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelProductNameText.move(1270,385)
 
         self.labelProductAmount = QtWidgets.QLabel(self)
-        self.labelProductAmount.setStyleSheet("background-color:#d0d1ff; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
+        self.labelProductAmount.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelProductAmount.resize(350,75)
+        self.labelProductAmount.setText("Ürün Adet/Kilo Fiyatı")
         self.labelProductAmount.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelProductAmount.setText("Product Amount :")
-        self.labelProductAmount.resize(250,50)
-        self.labelProductAmount.move(200,281)
+        self.labelProductAmount.move(830,510)
 
-        self.labelProductAmountArea = QtWidgets.QLabel(self)
-        self.labelProductAmountArea.setStyleSheet("background-color:#d0d1ff; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelProductAmountArea.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelProductAmountArea.resize(250,50)
-        self.labelProductAmountArea.move(510,281)
+        self.labelProductAmountText = QtWidgets.QLabel(self)
+        self.labelProductAmountText.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelProductAmountText.resize(350,75)
+        self.labelProductAmountText.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelProductAmountText.move(1270,510)
 
-        self.labelQuantity = QtWidgets.QLabel(self)
-        self.labelQuantity.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelQuantity.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelQuantity.setText("Quantity =>")
-        self.labelQuantity.resize(250,50)
-        self.labelQuantity.move(200,358)
+        self.labelProductQuantity = QtWidgets.QLabel(self)
+        self.labelProductQuantity.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.labelProductQuantity.resize(350,75)
+        self.labelProductQuantity.setText("Adet")
+        self.labelProductQuantity.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelProductQuantity.move(830,635)
 
-        self.textQuantity = QtWidgets.QLineEdit(self)
-        self.textQuantity.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047; border-radius:50px;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.textQuantity.setAlignment(QtCore.Qt.AlignCenter)
-        self.textQuantity.resize(250,50)
-        self.textQuantity.move(510,358)
-
-        self.buttonAdd = QPushButton("Add", self)
-        self.buttonAdd.setStyleSheet('background-color:#a8dadc; color:#023047; font-size:24px; border: 1px solid #006d77; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-        self.buttonAdd.resize(100,40)
-        self.buttonAdd.move(430,435)
-        if str(self.labelProductAmountArea.text()) != 0: 
-            self.buttonAdd.clicked.connect(self.addBasket)
+        self.textProductQuantity = QtWidgets.QLineEdit(self)
+        self.textProductQuantity.setStyleSheet("font-weight:bold; font-size:24px;background-color:#EAE4E9;color:#212529;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.textProductQuantity.setAlignment(QtCore.Qt.AlignCenter)
+        self.textProductQuantity.resize(350,75)
+        self.textProductQuantity.move(1270,635)
         
-        self.labelAmount = QtWidgets.QLabel(self)
-        self.labelAmount.setStyleSheet("background-color:#d0d1ff; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelAmount.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelAmount.setText("Total :")
-        self.labelAmount.resize(100,40)
-        self.labelAmount.move(0,500)
+        # end of content area
 
-        self.labelAmountArea = QtWidgets.QLabel(self)
-        self.labelAmountArea.setStyleSheet("background-color:#d0d1ff; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelAmountArea.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelAmountArea.setText("0")
-        self.labelAmountArea.resize(100,40)
-        self.labelAmountArea.move(110,500)
+        self.buttonConfirmBarcode2 = QPushButton('∴',self)
+        self.buttonConfirmBarcode2.setStyleSheet("background:#1D3557;color:#EAE4E9;border:none; font-size:28px;border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px;border-top-left-radius:10px")
+        self.buttonConfirmBarcode2.resize(75,75)
+        self.buttonConfirmBarcode2.move(1187,769)
+        self.buttonConfirmBarcode2.clicked.connect(self.addBasket)
 
-        self.buttonNext = QPushButton("Next", self)
-        self.buttonNext.setStyleSheet('background-color:#a8dadc; color:#023047; font-size:24px; border: 1px solid #006d77; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-        self.buttonNext.resize(100,40)
-        self.buttonNext.move(859,499)
-        self.buttonNext.clicked.connect(self.nextClick)
+        self.labelPrice = QtWidgets.QLabel(self)
+        self.labelPrice.setStyleSheet("font-weight:bold; font-size:24px;background-color:#99D98C;border-bottom-left-radius : 40px; ")
+        self.labelPrice.resize(150,50)
+        self.labelPrice.setText("0")
+        self.labelPrice.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelPrice.move(554,932)
 
-        self.buttonBackHome = QPushButton("Home", self)
-        self.buttonBackHome.setStyleSheet('background-color:#e76f51; color:#e9edc9; font-size:24px; border: 1px solid #293241; border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px')
-        self.buttonBackHome.resize(130,40)
-        self.buttonBackHome.move(415,500)
-        self.buttonBackHome.clicked.connect(self.backHome)
+        self.buttonConfirmBarcode2 = QPushButton('💵 ÖDE',self)
+        self.buttonConfirmBarcode2.setStyleSheet("font-weight:bold; font-size:24px;background-color:#99D98C;border-bottom-right-radius : 40px; ")
+        self.buttonConfirmBarcode2.resize(150,50)
+        self.buttonConfirmBarcode2.move(1746,932)
+        self.buttonConfirmBarcode2.clicked.connect(self.nextClick)
 
     def barcode(self):
         barcodes = readBarcodeService.generate()
         if len(barcodes) != 0:
             self.textBarcode.setText(barcodes[0])
-
-    def backHome(self):
-        self.mainForm = MainForm()
-        self.mainForm.show()
+    
+    def addProductWindow(self):
+        self.addProductWindow = addProductWindow()
+        self.addProductWindow.show()
         self.hide()
-
+    
     def clickConfirmButton(self):
-        self.labelProductNameArea.setText(" ")
-        self.labelProductAmountArea.setText(" ")
+        self.labelProductNameText.setText(" ")
+        self.labelProductAmountText.setText(" ")
         if len(str(self.textBarcode.text())) != 0:
             try:
                 self.productBarcodeName = self.textBarcode.text()
@@ -364,17 +446,20 @@ class saleWindow(QMainWindow):
                 for row in data:
                     self.productName = row[1]
                     self.productAmount = row[2]
-                    self.labelProductNameArea.setText(self.productName)
-                    self.labelProductAmountArea.setText(str(self.productAmount))
+                    self.labelProductNameText.setText(self.productName)
+                    self.labelProductAmountText.setText(str(self.productAmount))
             except sqlite3.OperationalError:
                 self.warningMessage("Please enter the information correctly and completely.")
+        else:
+            self.warningMessage("Please enter the information correctly and completely.")
+
     def addBasket(self):
         try:
-            self.quantity = int(self.textQuantity.text())
-            self.basketTotal = int(self.labelAmountArea.text())
+            self.quantity = int(self.textProductQuantity.text())
+            self.basketTotal = int(self.labelPrice.text())
             
-            self.text = str(self.basketTotal + (self.quantity * self.productAmount))
-            self.labelAmountArea.setText(self.text)
+            self.text = str(self.basketTotal + (self.quantity * int(self.labelProductAmountText.text())))
+            self.labelPrice.setText(self.text)
             
         except ValueError:
             self.warningMessage("Please enter the information correctly and completely.")
@@ -382,78 +467,25 @@ class saleWindow(QMainWindow):
             self.warningMessage("Please enter the information correctly and completely.")
 
         self.textBarcode.setText(" ")
-        self.labelProductNameArea.setText(" ")
-        self.labelProductAmountArea.setText(" ")
-        self.textQuantity.setText(" ")
+        self.labelProductNameText.setText(" ")
+        self.labelProductAmountText.setText(" ")
+        self.textProductQuantity.setText(" ")
 
     def nextClick(self):
-        self.currentAmount = int(self.labelAmountArea.text())
+        self.currentAmount = int(self.labelPrice.text())
 
         if self.currentAmount != 0:
             backendServices.saveAmount(str(datetime.datetime.now().date()),self.currentAmount,str(datetime.datetime.now().strftime("%H:%M")))
             self.congMessage("Transaction completed successfully")
 
-            self.labelAmountArea.setText("0")
+            self.labelPrice.setText("0")
         else:
             self.warningMessage("Please sell first.")
-
-class MainForm(QMainWindow):
-    def __init__(self):
-        super(MainForm, self).__init__()
-
-        self.setWindowTitle('X Market')
-        self.setGeometry(450, 250, 960, 540)
-
-        self.setWindowIcon(QIcon('./frontend/icons/market.png'))
-        self.setStyleSheet('background-color: #293241')
-
-        self.initUI()
-
-    def initUI(self):
-        self.btnSale = QPushButton('💲 Satış Yap 💲', self)
-        self.btnSale.setStyleSheet('background-color:#f2e9e4; color:#22223b; font-weight:bold; font-size:24px')
-        self.btnSale.resize(300,150)
-        self.btnSale.move(150,195)
-        self.btnSale.clicked.connect(self.saleWindow)
-
-        self.btnAddProd = QPushButton('📁 Ürün Kaydet 📁', self)
-        self.btnAddProd.setStyleSheet('background-color:#f2e9e4; color:#22223b; font-weight:bold; font-size:24px')
-        self.btnAddProd.resize(300,150)
-        self.btnAddProd.move(510,195)
-        self.btnAddProd.clicked.connect(self.addProductWindow)
-
-        self.date = datetime.datetime.now().date()
-        self.dailyEarnings = backendServices.dailyEarnings(self.date)
-
-        self.labelDailyEarnings = QtWidgets.QLabel(self)
-        self.labelDailyEarnings.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.labelDailyEarnings.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelDailyEarnings.setText(f"Daily Earnings : {self.dailyEarnings}")
-        self.labelDailyEarnings.resize(200,75)
-        self.labelDailyEarnings.move(0,465)
-
-        
-        self.btnSaleHistory = QPushButton("Sale History", self)
-        self.btnSaleHistory.setStyleSheet("background-color:#a8dadc; font-size:20px; color:#023047;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px")
-        self.btnSaleHistory.resize(200,75)
-        self.btnSaleHistory.move(760,465)
-        self.btnSaleHistory.clicked.connect(self.saleHis)
-
-    def addProductWindow(self):
-        self.addProductWindow = addProductWindow()
-        self.addProductWindow.show()
-        self.hide()
-
+    
     def saleHis(self):
-        self.saleWind = salesHistoryPage()
-        self.saleWind.show()
+        self.saleHiss = salesHistoryPage()
+        self.saleHiss.show()
         self.hide()
-
-    def saleWindow(self):
-        self.saleWindow = saleWindow()
-        self.saleWindow.show()
-        self.hide()
-
 
 def run():
     app = QApplication(sys.argv)
