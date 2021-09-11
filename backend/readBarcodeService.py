@@ -26,7 +26,7 @@ def generate():
         ret, frame = camera.read()
         frame = readBarcode(frame)
         cv2.imshow('Barcode Redader',frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q') | len(barcodeList) != 0:
             break
     camera.release()
     cv2.destroyAllWindows()
