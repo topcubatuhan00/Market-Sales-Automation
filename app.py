@@ -18,6 +18,38 @@ class salesHistoryPage(QWidget):
         
         self.showMaximized()
     def initUI(self):
+        
+        self.labelBg = QtWidgets.QLabel(self)
+        self.labelBg.setStyleSheet("background-color:#CDDAFD;border-top-right-radius : 40px; border-bottom-left-radius : 40px; border-bottom-right-radius : 40px")
+        self.labelBg.resize(1342,900)
+        self.labelBg.move(554,82)
+
+        self.createTable()
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.tableWidget)
+        self.setLayout(self.layout)
+
+        self.text1 = QtWidgets.QLabel(self)
+        self.text1.setStyleSheet("font-size:20px; color:#1D3557;font-weight:bold; border-bottom: 1px solid #1D3557; background-color:#CDDAFD")
+        self.text1.setAlignment(QtCore.Qt.AlignCenter)
+        self.text1.setText("Tarih")
+        self.text1.resize(75,50)
+        self.text1.move(1020,185)
+
+        self.text2 = QtWidgets.QLabel(self)
+        self.text2.setStyleSheet("font-size:20px; font-weight:bold;color:#1D3557;border-bottom: 1px solid #1D3557;background-color:#CDDAFD")
+        self.text2.setAlignment(QtCore.Qt.AlignCenter)
+        self.text2.setText("Saat")
+        self.text2.resize(75,50)
+        self.text2.move(1155,185)
+
+        self.text3 = QtWidgets.QLabel(self)
+        self.text3.setStyleSheet("font-size:20px;font-weight:bold; color:#1D3557;border-bottom: 1px solid #1D3557;background-color:#CDDAFD")
+        self.text3.setAlignment(QtCore.Qt.AlignCenter)
+        self.text3.setText("Ücret")
+        self.text3.resize(75,50)
+        self.text3.move(1275,185)
 
         self.buttonBack = QPushButton('↼',self)
         self.buttonBack.setStyleSheet("background:#DFE7FD;color:000000;border:none; font-size:36px")
@@ -31,44 +63,28 @@ class salesHistoryPage(QWidget):
         self.btnSale.move(94,340)
         self.btnSale.clicked.connect(self.saleWindow)
 
-        
+        self.btnAddProd = QPushButton('Ürün Kaydet', self)
+        self.btnAddProd.setStyleSheet('background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px; opacity:.5')
+        self.btnAddProd.resize(350,100)
+        self.btnAddProd.move(94,490)
+        self.btnAddProd.clicked.connect(self.addProductWindow)
 
         self.btnSaleHistory = QPushButton("Satış Geçmişi", self)
         self.btnSaleHistory.setStyleSheet("background-color:#FAD2E1; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#1D3557; font-weight:bold; font-size:24px; opacity:.5")
         self.btnSaleHistory.resize(350,100)
         self.btnSaleHistory.move(94,640)
-        
-        self.createTable()
 
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.tableWidget)
-        self.setLayout(self.layout)
-
-        self.text1 = QtWidgets.QLabel(self)
-        self.text1.setStyleSheet("font-size:20px; color:#1D3557;font-weight:bold; border-bottom: 1px solid #1D3557;")
-        self.text1.setAlignment(QtCore.Qt.AlignCenter)
-        self.text1.setText("Tarih")
-        self.text1.resize(75,50)
-        self.text1.move(820,50)
-        self.text2 = QtWidgets.QLabel(self)
-        self.text2.setStyleSheet("font-size:20px; font-weight:bold;color:#1D3557;border-bottom: 1px solid #1D3557;")
-        self.text2.setAlignment(QtCore.Qt.AlignCenter)
-        self.text2.setText("Saat")
-        self.text2.resize(75,50)
-        self.text2.move(955,50)
-        self.text3 = QtWidgets.QLabel(self)
-        self.text3.setStyleSheet("font-size:20px;font-weight:bold; color:#1D3557;border-bottom: 1px solid #1D3557;")
-        self.text3.setAlignment(QtCore.Qt.AlignCenter)
-        self.text3.setText("Ücret")
-        self.text3.resize(75,50)
-        self.text3.move(1075,50)
-
+        self.labelBg = QtWidgets.QLabel(self)
+        self.labelBg.setStyleSheet("background-color:#DFE7FD;")
+        self.labelBg.resize(20,900)
+        self.labelBg.move(1896,82)
 
         self.show()
     def addProductWindow(self):
         self.addProductWindow = addProductWindow()
         self.addProductWindow.show()
         self.hide()
+    
     def saleWindow(self):
         self.salePage = MainForm()
         self.salePage.show()
@@ -83,11 +99,12 @@ class salesHistoryPage(QWidget):
         self.tableWidget.setStyleSheet("""
                 font-size:24px; 
                 color:#1D3557;
-                margin-left: 750px;
-                margin-top: 125px;
                 border: none;
+                margin-left:950px;
                 font-weight:bold;
+                background-color:#CDDAFD;
             """)
+        self.tableWidget.setMaximumHeight(500)
         header = self.tableWidget.horizontalHeader()
         
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
@@ -107,11 +124,7 @@ class salesHistoryPage(QWidget):
             y = 0
             x+=1
 
-        self.btnAddProd = QPushButton('Ürün Kaydet', self)
-        self.btnAddProd.setStyleSheet('background-color:#FDE2E4; border:1px solid #FAD2E1;border-top-left-radius :10px; border-top-right-radius : 10px; border-bottom-left-radius : 10px; border-bottom-right-radius : 10px; color:#6c757d; font-weight:bold; font-size:24px; opacity:.5')
-        self.btnAddProd.resize(350,100)
-        self.btnAddProd.move(94,490)
-        self.btnAddProd.clicked.connect(self.addProductWindow)
+        
 class addProductWindow(QMainWindow):
     def __init__(self):
         super(addProductWindow, self).__init__()
