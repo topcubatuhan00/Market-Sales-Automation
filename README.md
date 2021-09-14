@@ -2,7 +2,7 @@
 
 Market sales application is a product that facilitates the sales operation while selling products by using barcodes in the markets. It is an application that makes it easy to use a webcam as a barcode reader, its structure that works with the logic of adding to cart, and you perform the sale when the shopping is finished. 
 
-Dunya-desktop mainly uses [PyQt5](https://www.riverbankcomputing.com/software/pyqt/download5), Python bindings for [Qt5](https://www.qt.io/developers/) application framework, for the user interface design and [OpenCV](https://opencv.org/) module for reaching the barcode read of the this app.
+This app mainly uses [PyQt5](https://www.riverbankcomputing.com/software/pyqt/download5), Python bindings for [Qt5](https://www.qt.io/developers/) application framework, for the user interface design and [OpenCV](https://opencv.org/) module for reaching the barcode read of the this app.
 
 Get Started
 ============
