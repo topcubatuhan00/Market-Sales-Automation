@@ -24,6 +24,7 @@ Firstly you should download [Python3](https://www.python.org/downloads/).
 
 * For barcode read process you should download [Iriun Webcam](https://iriun.com/) in computer and mobile phone. If not you want, you can use your laptops webcam or you can write barcode with keyboard.
 
+### `just run app.py`
 
 Contact
 =========
