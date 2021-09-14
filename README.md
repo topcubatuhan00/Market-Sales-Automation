@@ -8,14 +8,25 @@ Get Started
 ============
 
 Firstly you should download [Python3](https://www.python.org/downloads/). 
+
 >	 Recommended version 3.9.6
+
 >    You must be in the file you cloned for installing any packages.
+
 * Then go to project folder and run cmd. After running cmd.
-        pip install -r requirements.txt
+
+### 'pip install -r requirements.txt'
+
+
 * After downloading don't close cmd.
-        cd backend
-        python database.py
+
+### 'cd backend'
+
+### 'python database.py'
+
+
 * For barcode read process you should download [Iriun Webcam](https://iriun.com/) in computer and mobile phone. If not you want, you can use your laptops webcam or you can write barcode with keyboard.
+
 
 Contact
 =========
