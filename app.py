@@ -439,6 +439,7 @@ class MainForm(QMainWindow):
         self.buttonConfirmBarcode2.clicked.connect(self.nextClick)
 
     def barcode(self):
+        self.textBarcode.setText(" ")
         barcodes = readBarcodeService.generate()
         if len(barcodes) != 0:
             self.textBarcode.setText(barcodes[0])

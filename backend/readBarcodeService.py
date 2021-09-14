@@ -3,9 +3,11 @@ from pyzbar import pyzbar
 import winsound
 
 
-barcodeList = []
+
 
 def readBarcode(frame):
+    global barcodeList
+    barcodeList = []
     barcodes = pyzbar.decode(frame)
     for barcode in barcodes:
         x, y, w, h = barcode.rect
@@ -26,10 +28,12 @@ def generate():
         ret, frame = camera.read()
         frame = readBarcode(frame)
         cv2.imshow('Barcode Redader',frame)
-        if cv2.waitKey(1) & 0xFF == ord('q') | len(barcodeList) != 0:
+        barcodeNum = len(barcodeList)
+        if cv2.waitKey(1) & barcodeNum != 0:
             break
     camera.release()
     cv2.destroyAllWindows()
     return barcodeList
+
 
 
